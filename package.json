@@ -1,0 +1,21 @@
+{
+  "name": "ts-without-react",
+  "version": "1.0.0",
+  "description": "",
+  "source": "index.html",
+  "main": "index.js",
+  "scripts": {
+    "start": "parcel"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/uuid": "^9.0.1",
+    "parcel": "^2.8.3",
+    "typescript": "^5.0.2"
+  },
+  "dependencies": {
+    "uuid": "^9.0.0"
+  }
+}
