@@ -1,51 +1,21 @@
-import {v4 as uuidV4} from 'uuid';
-type Task={
-    title:string,
-    created:Date,
-    completed?:boolean,
-}
+import { Country, renderCountryList } from "./dom-utils";
 
-const list= document.querySelector<HTMLUListElement>("#itemList")
-const inputTask= document.querySelector<HTMLInputElement>("#task")
-const addButton= document.querySelector('button');
-const tasksList:Task[]=loadTaske()
-tasksList.forEach(item=>addTask(item))
+const API_URL_ALL_COUNTRIES = "https://restcountries.com/v3.1/all";
 
-function addTask(task:Task){
-    const listElement= document.createElement("li")
-    const label= document.createElement("label")
-    const checkbox=document.createElement("input")
-    checkbox.type="checkbox"
-    checkbox.addEventListener("change", ()=>{
-        task.completed=checkbox.checked
-        saveTasks()
-    })
-    checkbox.checked=task.completed ?? false
-    label.append(task.title, checkbox)
-    listElement.append(label)
-    list?.append(listElement)
-}
-addButton?.addEventListener("click",e=>{
-    e.preventDefault()
-    if (inputTask?.value==="" || inputTask?.value===undefined) return
-    const myTask:Task={        
-        title:inputTask.value,
-        created: new Date()
-    }
-    
-    addTask(myTask); 
-    inputTask.value=""
-    tasksList.push(myTask)
-    saveTasks()
-})
-function saveTasks(){
-    window.localStorage.setItem("ToDoList", JSON.stringify(tasksList))
-}
-function loadTaske():Task[]{
-    const tasksJSON= window.localStorage.getItem("ToDoList")
-    if (tasksJSON ==null) return []
-    return JSON.parse(tasksJSON)
-}
+let countries: Country[];
 
-
-
+fetch(API_URL_ALL_COUNTRIES)
+  .then((res) => res.json())
+  .then((returnedCountries) => {
+    countries = returnedCountries.map((country) => {
+      const primaryInfo: Country = {
+        capital: country.capital,
+        flag: country.flags.png,
+        name: country.name.common,
+        region: country.region,
+        population: country.population,
+      };
+      return primaryInfo;
+    });
+    renderCountryList(countries);
+  });
