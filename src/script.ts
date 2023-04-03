@@ -1,4 +1,4 @@
-import { Country, renderCountryList } from "./dom-utils";
+import { Country, renderCountryList, createDivFilters } from "./dom-utils";
 
 const API_URL_ALL_COUNTRIES = "https://restcountries.com/v3.1/all";
 
@@ -19,3 +19,5 @@ fetch(API_URL_ALL_COUNTRIES)
     });
     renderCountryList(countries);
   });
+
+createDivFilters();
