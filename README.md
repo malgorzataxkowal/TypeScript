@@ -1,5 +1,7 @@
 # Get Started
 
+This is a coutry list project created in vanila JS + TS
+
 ##To initial existing code:
 
 1. **Install [Node 8](https://nodejs.org)** or newer.
