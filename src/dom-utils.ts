@@ -6,6 +6,7 @@ export type Country = {
   population: number;
 };
 export enum Region {
+  ALL = "",
   ASIA = "Asia",
   AFRICA = "Africa",
   AMERICAS = "Americas",
@@ -111,5 +112,6 @@ const createCountryItem = (country: Country): HTMLLIElement => {
 };
 export const renderCountryList = (countries: Country[]) => {
   const rootElement = document.querySelector("#listOfCountries");
-  rootElement?.appendChild(createCountriesList(countries));
+  rootElement!.innerHTML = "";
+  countries.length && rootElement?.appendChild(createCountriesList(countries));
 };
