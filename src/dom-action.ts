@@ -1,27 +1,30 @@
-import { Country, renderCountryList, Region } from "./dom-utils";
+import { Country, CountryDetails, Region } from "./dom-utils";
 
 export const fetchCountry = async (url: string) => {
-  let countriesList: Country[] = [];
-  await fetch(url)
-    .then((res) => res.json())
-    .then((returnedCountries) => {
-      countriesList = returnedCountries.map((country) => {
-        const primaryInfo: Country = {
-          capital: country.capital,
-          flag: country.flags.png,
-          name: country.name.common,
-          region: country.region,
-          population: country.population,
-        };
-        return primaryInfo;
+  let countriesList: Country[];
+  try {
+    await fetch(url)
+      .then((res) => res.json())
+      .then((returnedCountries) => {
+        let countries = returnedCountries.map((country) => {
+          const primaryInfo: Country = {
+            capital: country.capital,
+            flag: country.flags.png,
+            name: country.name.common,
+            region: country.region,
+            population: country.population,
+            code: country.cioc || country.cca2 || country.cca3 || country.ccn3,
+          };
+          return primaryInfo;
+        });
+        countriesList = countries;
+      })
+      .catch(() => {
+        console.log(`Problems with fetch data from ${url}`);
       });
-      return countriesList;
-    })
-    .catch(() => {
-      console.log(`Problems with fetch data from ${url}`);
-      countriesList = [];
-      return [];
-    });
+  } catch (error) {
+    console.log("Error! Can't download country details");
+  }
   return countriesList;
 };
 
