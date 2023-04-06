@@ -32,7 +32,7 @@ const createOptionItem = (
   return optionItem;
 };
 
-const createSelectItem = () => {
+const createSelectItem = (): HTMLSelectElement => {
   const selectItem = document.createElement("select");
   selectItem.name = "region";
   selectItem.id = "region";
@@ -44,7 +44,7 @@ const createSelectItem = () => {
   selectItem.appendChild(createOptionItem(Region.OCEANIA));
   return selectItem;
 };
-const createFilterByCountry = () => {
+const createFilterByCountry = (): HTMLDivElement => {
   const contentDiv = document.createElement("div");
   contentDiv.classList.add("query-section");
   const inputCountryName = document.createElement("input");
@@ -59,10 +59,9 @@ const createFilterByCountry = () => {
   contentDiv.appendChild(iconElement);
   return contentDiv;
 };
-export const createDivFilters = () => {
-  const divForFilterSection = <HTMLDivElement>(
-    document.querySelector(".filters")
-  );
+export const createDivFilters = (): HTMLDivElement => {
+  const divForFilterSection = document.createElement("div");
+  divForFilterSection.classList.add("filters");
   divForFilterSection.appendChild(createFilterByCountry());
   divForFilterSection.appendChild(createSelectItem());
 
@@ -101,6 +100,7 @@ const createFlagElement = <T extends Country | CountryDetails>(
 
 const createCountriesList = (countries: Country[]): HTMLUListElement => {
   const listOfCountries = document.createElement("ul");
+  listOfCountries.classList.add("listOfCountries");
   countries.forEach((country) => {
     listOfCountries.appendChild(createCountryItem(country));
   });
@@ -124,15 +124,15 @@ const createCountryItem = (country: Country): HTMLLIElement => {
   listElement.appendChild(anchorElement);
   return listElement;
 };
-export const renderCountryList = (countries: Country[]) => {
-  const rootElement = document.querySelector("#listOfCountries");
+export const renderCountryList = (countries: Country[]): void => {
+  const rootElement = document.querySelector(".countriesDashboard");
   rootElement!.innerHTML = "";
   countries.length && rootElement?.appendChild(createCountriesList(countries));
 };
 
 const createCountryView = (country: CountryDetails): HTMLDivElement => {
   const countryContent = document.createElement("div");
-
+  countryContent.classList.add("country-detail-container");
   countryContent.appendChild(createFlagElement(country));
 
   const infoContent = document.createElement("div");
@@ -143,7 +143,7 @@ const createCountryView = (country: CountryDetails): HTMLDivElement => {
   countryName.classList.add("country-name");
   infoContent.appendChild(countryName);
 
-  infoContent.appendChild(createInfoElement("Native Name", country.population));
+  infoContent.appendChild(createInfoElement("Native Name", country.nativeName));
   infoContent.appendChild(createInfoElement("Population", country.population));
   infoContent.appendChild(createInfoElement("Region", country.region));
   infoContent.appendChild(createInfoElement("Subregion", country.subregion));
@@ -151,49 +151,64 @@ const createCountryView = (country: CountryDetails): HTMLDivElement => {
   infoContent.appendChild(createInfoElement("Top Level Domain", country.tld));
   infoContent.appendChild(createInfoElement("Curriencies", country.currencies));
   infoContent.appendChild(createInfoElement("Languages", country.language));
-
+  infoContent.appendChild(createBorderCountriesContainer(country));
   countryContent.appendChild(infoContent);
+
   return countryContent;
 };
-const createBackButton = (): HTMLAnchorElement => {
+const createButtonWithLink = (
+  label: string,
+  link: string
+): HTMLAnchorElement => {
   const anchorBackElement = document.createElement("a");
-
-  anchorBackElement.innerText = "BACK";
-  anchorBackElement.classList.add("back-details-button");
-  anchorBackElement.href = "/";
+  anchorBackElement.innerText = label;
+  anchorBackElement.classList.add(label);
+  anchorBackElement.href = link;
   return anchorBackElement;
 };
-const renderBorderCountriesList = (countriesList: string[]) => {
-  const countriesListContent = document.createElement("ul");
+const renderBorderCountriesList = (
+  countriesList: string[]
+): HTMLUListElement => {
+  const borderCountriesList = document.createElement("ul");
+  borderCountriesList.classList.add("border-country-list");
   countriesList.map((country) => {
-    const countriesListElement = document.createElement("li");
-    countriesListElement.innerText = country;
-    countriesListContent.appendChild(countriesListElement);
+    const redirectToCountryDetails = `?country=${country}`;
+    borderCountriesList.appendChild(
+      createButtonWithLink(country, redirectToCountryDetails)
+    );
   });
-  return countriesListContent;
+  return borderCountriesList;
 };
 
-const createBorderCountriesConteiner = (
+const createBorderCountriesContainer = (
   country: CountryDetails
 ): HTMLDivElement => {
-  const borderCountriesConteiner = document.createElement("div");
+  const borderCountriesContainer = document.createElement("div");
   const borderCountriesLabel = document.createElement("strong");
-  borderCountriesLabel.innerText = "Border Countries";
+  borderCountriesLabel.innerText = "Border Countries: ";
   borderCountriesLabel.id = "border-countries-label";
-  borderCountriesConteiner.appendChild(borderCountriesLabel);
+  borderCountriesContainer.appendChild(borderCountriesLabel);
   if (country.borders?.length) {
-    borderCountriesConteiner.appendChild(
+    borderCountriesContainer.appendChild(
       renderBorderCountriesList(country.borders)
     );
   }
-
-  return borderCountriesConteiner;
+  return borderCountriesContainer;
 };
+export const createCountryListConteiner = (): void => {
+  const rootItem = document.querySelector("#root");
+  rootItem?.appendChild(createDivFilters());
 
-export const renderCountryDetail = (country: CountryDetails) => {
-  const rootElement = document.querySelector("#countryDetails");
+  const listOfCountriesContent = document.createElement("div");
+  listOfCountriesContent.classList.add("countriesDashboard");
+  rootItem?.appendChild(listOfCountriesContent);
+};
+export const renderCountryDetail = (country: CountryDetails): void => {
+  const rootElement = document.querySelector("#root");
   rootElement!.innerHTML = "";
-  rootElement?.appendChild(createBackButton());
-  rootElement?.appendChild(createCountryView(country));
-  rootElement?.appendChild(createBorderCountriesConteiner(country));
+  const detailViewContainer = document.createElement("div");
+  detailViewContainer.classList.add("detail-view-conteiner");
+  detailViewContainer.appendChild(createButtonWithLink("BACK", "/"));
+  detailViewContainer.appendChild(createCountryView(country));
+  rootElement?.appendChild(detailViewContainer);
 };

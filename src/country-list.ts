@@ -1,7 +1,7 @@
 import {
   Country,
   renderCountryList,
-  createDivFilters,
+  createCountryListConteiner,
   Region,
 } from "./dom-utils";
 import { filterbyRegionAndByCountryName, fetchCountry } from "./dom-action";
@@ -13,7 +13,7 @@ export const countryListView = () => {
   let countryNameValue: string = "";
   let regionValue: Region = Region.ALL;
 
-  createDivFilters();
+  createCountryListConteiner();
 
   fetchCountry(API_URL_ALL_COUNTRIES).then((countryList) => {
     countries = countryList;
@@ -26,6 +26,7 @@ export const countryListView = () => {
   inputCountryName &&
     inputCountryName.addEventListener("input", (e) => {
       countryNameValue = (e.target as HTMLInputElement).value;
+      console.log(countryNameValue);
       renderCountryList(
         filterbyRegionAndByCountryName(countries, countryNameValue, regionValue)
       );
