@@ -1,8 +1,13 @@
 :root {
   --color-text-dark: hsl(200, 15%, 8%);
   --color-input-dark: hsl(0, 0%, 53%);
-  --color-light-background: hsla(0, 0%, 98%, 0.911);
+  --color-light-background: hsl(0, 0%, 98%, 0.911);
   --color-white-background: hsl(0, 0%, 100%);
+
+  --color-text-lite: hsl(0, 0%, 100%);
+  --color-input-lite: hsl(0, 0%, 100%);
+  --color-light-dark-background: hsl(200, 14%, 12%);
+  --color-dark-background: hsl(200, 15%, 8%);
 }
 x * {
   box-sizing: border-box;
@@ -15,6 +20,12 @@ body {
   font-family: "Nunito Sans", sans-serif;
   background-color: var(--color-light-background);
 }
+body.dark {
+  --color-text-dark: white;
+  --color-input-dark: white;
+  --color-light-background: grey;
+  --color-white-background: black;
+}
 /*
 Styling for the main view- countries list
 */
@@ -25,6 +36,7 @@ main {
   padding: 30px 0 30px;
 }
 header {
+  color: var(--color-text-dark);
   background-color: var(--color-white-background);
 }
 .header-content {
@@ -35,6 +47,7 @@ header {
 header button {
   border: none;
   background-color: transparent;
+  color: var(--color-text-dark);
   font-size: 24px;
   cursor: pointer;
 }
@@ -53,6 +66,8 @@ div.query-section {
   border-radius: 5px;
   padding: 20px 30px;
   box-shadow: 0px 8px 8px 1px rgb(134, 137, 161);
+  color: var(--color-text-dark);
+  background-color: var(--color-white-background);
 }
 input.query {
   position: absolute;
@@ -129,6 +144,7 @@ div.country-detail-container img {
   overflow: hidden;
 }
 div.country-detail-container div.info-details-container {
+  color: var(--color-text-dark);
   display: flex;
   flex-direction: column;
   width: 30%;

@@ -7,3 +7,8 @@ if (window.location.search.includes("?country=")) {
 } else {
   countryListView();
 }
+const theme = document.querySelector("header button");
+theme?.addEventListener("click", () => {
+  const body = document.querySelector("body");
+  body?.classList.toggle("dark");
+});
