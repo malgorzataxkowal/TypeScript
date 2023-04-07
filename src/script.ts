@@ -21,7 +21,9 @@ theme?.addEventListener("click", () => {
     localStorage.setItem("theme", "ligth");
     body?.classList.remove("dark");
     appTheme = "ligth";
+    body?.classList.add("ligth");
   } else {
+    body?.classList.remove("ligth");
     localStorage.setItem("theme", "dark");
     body?.classList.add("dark");
     appTheme = "dark";

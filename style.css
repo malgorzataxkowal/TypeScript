@@ -26,6 +26,12 @@ body.dark {
   --color-light-background: grey;
   --color-white-background: black;
 }
+body.ligth {
+  --color-text-dark: hsl(200, 15%, 8%);
+  --color-input-dark: hsl(0, 0%, 53%);
+  --color-light-background: hsl(0, 0%, 98%, 0.911);
+  --color-white-background: hsl(0, 0%, 100%);
+}
 /*
 Styling for the main view- countries list
 */
@@ -197,5 +203,17 @@ Media query for the details view
   }
   div.country-detail-container div.info-details-container {
     width: 100%;
+  }
+}
+
+/*
+Media query for the dark theme set in system prefereneces
+*/
+@media (prefers-color-scheme: dark) {
+  body {
+    --color-text-dark: white;
+    --color-input-dark: white;
+    --color-light-background: grey;
+    --color-white-background: black;
   }
 }
