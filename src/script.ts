@@ -1,6 +1,14 @@
 import { countryListView } from "./country-list";
 import { countryDetailView } from "./country-detail";
 
+let appTheme = localStorage.getItem("theme") || "ligth";
+const body = document.querySelector("body");
+if (appTheme === "dark") {
+  body?.classList.add("dark");
+} else {
+  body?.classList.remove("dark");
+}
+
 if (window.location.search.includes("?country=")) {
   const countryCode = window.location.search.slice(9);
   countryDetailView(countryCode);
@@ -9,6 +17,13 @@ if (window.location.search.includes("?country=")) {
 }
 const theme = document.querySelector("header button");
 theme?.addEventListener("click", () => {
-  const body = document.querySelector("body");
-  body?.classList.toggle("dark");
+  if (appTheme === "dark") {
+    localStorage.setItem("theme", "ligth");
+    body?.classList.remove("dark");
+    appTheme = "ligth";
+  } else {
+    localStorage.setItem("theme", "dark");
+    body?.classList.add("dark");
+    appTheme = "dark";
+  }
 });
